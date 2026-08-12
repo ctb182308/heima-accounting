@@ -14,6 +14,9 @@ interface TransactionState {
 
   // 分类操作
   loadCategories: (type?: TransactionType) => Promise<void>
+  addCategory: (category: Omit<Category, 'id' | 'is_system'>) => Promise<{ success: boolean; message: string }>
+  updateCategory: (id: number, updates: { name?: string; icon?: string; is_necessary?: boolean }) => Promise<{ success: boolean; message: string }>
+  deleteCategory: (id: number) => Promise<{ success: boolean; message: string }>
 }
 
 export const useTransactionStore = create<TransactionState>((set, get) => ({
@@ -54,5 +57,38 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
   loadCategories: async (type) => {
     const categories = await window.api.getCategories(type)
     set({ categories })
+  },
+
+  addCategory: async (category) => {
+    const result = await window.api.addCategory(category)
+    if (result.success) {
+      // 重新加载分类列表
+      await get().loadCategories(category.type)
+    }
+    return result
+  },
+
+  updateCategory: async (id, updates) => {
+    const result = await window.api.updateCategory(id, updates)
+    if (result.success && result.category) {
+      // 更新本地状态
+      set((state) => ({
+        categories: state.categories.map((c) =>
+          c.id === id ? { ...c, ...result.category } : c
+        )
+      }))
+    }
+    return result
+  },
+
+  deleteCategory: async (id) => {
+    const result = await window.api.deleteCategory(id)
+    if (result.success) {
+      // 从本地状态移除
+      set((state) => ({
+        categories: state.categories.filter((c) => c.id !== id)
+      }))
+    }
+    return result
   }
 }))

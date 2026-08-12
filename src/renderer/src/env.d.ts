@@ -16,6 +16,9 @@ interface Window {
 
     // 分类相关
     getCategories: (type?: string) => Promise<any[]>
+    addCategory: (category: any) => Promise<{ success: boolean; category?: any; message: string }>
+    updateCategory: (id: number, updates: any) => Promise<{ success: boolean; category?: any; message: string }>
+    deleteCategory: (id: number) => Promise<{ success: boolean; message: string }>
 
     // 预算相关
     setBudget: (budget: any) => Promise<any>

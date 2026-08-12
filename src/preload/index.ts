@@ -15,6 +15,9 @@ contextBridge.exposeInMainWorld('api', {
 
   // 分类相关
   getCategories: (type?: string) => ipcRenderer.invoke('category:getList', type),
+  addCategory: (category: any) => ipcRenderer.invoke('category:add', category),
+  updateCategory: (id: number, updates: any) => ipcRenderer.invoke('category:update', id, updates),
+  deleteCategory: (id: number) => ipcRenderer.invoke('category:delete', id),
 
   // 预算相关
   setBudget: (budget: any) => ipcRenderer.invoke('budget:set', budget),

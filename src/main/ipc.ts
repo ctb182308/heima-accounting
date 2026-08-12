@@ -38,9 +38,24 @@ export function setupIpcHandlers(): void {
     return db.deleteTransaction(id)
   })
 
-  // 获取分类
+  // 获取分类列表
   ipcMain.handle('category:getList', (_, type) => {
     return db.getCategories(type)
+  })
+
+  // 添加自定义分类
+  ipcMain.handle('category:add', (_, category) => {
+    return db.addCategory(category)
+  })
+
+  // 修改分类
+  ipcMain.handle('category:update', (_, id, updates) => {
+    return db.updateCategory(id, updates)
+  })
+
+  // 删除分类
+  ipcMain.handle('category:delete', (_, id) => {
+    return db.deleteCategory(id)
   })
 
   // 设置预算

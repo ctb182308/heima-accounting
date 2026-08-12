@@ -24,6 +24,7 @@ export async function initDatabase(): Promise<void> {
   db.run('PRAGMA foreign_keys = ON')
 
   createTables()
+  migrateCategories()
   initCategories()
 }
 
@@ -117,6 +118,19 @@ function createTables(): void {
   saveDatabase()
 }
 
+// 数据库迁移：为 categories 表添加 is_system 字段
+function migrateCategories(): void {
+  // 检查 is_system 字段是否已存在
+  const columns = queryAll("SELECT name FROM pragma_table_info('categories')")
+  const hasIsSystem = columns.some((c: any) => c.name === 'is_system')
+  if (!hasIsSystem) {
+    db.run('ALTER TABLE categories ADD COLUMN is_system INTEGER DEFAULT 0')
+    // 将所有现有分类标记为系统预置分类
+    db.run('UPDATE categories SET is_system = 1')
+    saveDatabase()
+  }
+}
+
 // 初始化分类数据
 function initCategories(): void {
   const count = queryOne('SELECT COUNT(*) as count FROM categories')
@@ -143,9 +157,10 @@ function initCategories(): void {
     ['其他', '🎁', 'income', 0, 5]
   ]
 
+  // 预置分类标记为系统分类（is_system = 1）
   const stmt = db.prepare(`
-    INSERT INTO categories (name, icon, type, is_necessary, sort_order)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO categories (name, icon, type, is_necessary, sort_order, is_system)
+    VALUES (?, ?, ?, ?, ?, 1)
   `)
 
   for (const cat of categories) {
@@ -284,11 +299,102 @@ export function deleteTransaction(id: number): void {
 
 // ==================== 分类操作 ====================
 
+// 获取分类列表
 export function getCategories(type?: TransactionType): Category[] {
   if (type) {
     return queryAll('SELECT * FROM categories WHERE type = ? ORDER BY sort_order', [type]) as Category[]
   }
   return queryAll('SELECT * FROM categories ORDER BY type, sort_order') as Category[]
+}
+
+// 添加自定义分类（用户创建的分类 is_system = 0）
+export function addCategory(category: Omit<Category, 'id' | 'is_system'>): { success: boolean; category?: Category; message: string } {
+  try {
+    // 检查同名分类是否已存在
+    const existing = queryOne('SELECT id FROM categories WHERE name = ? AND type = ?', [category.name, category.type])
+    if (existing) {
+      return { success: false, message: '该分类名称已存在' }
+    }
+
+    // 获取最大排序号
+    const maxOrder = queryOne('SELECT MAX(sort_order) as max_order FROM categories WHERE type = ?', [category.type])
+    const sortOrder = (maxOrder?.max_order || 0) + 1
+
+    runSql(
+      `INSERT INTO categories (name, icon, type, is_necessary, sort_order, is_system)
+       VALUES (?, ?, ?, ?, ?, 0)`,
+      [category.name, category.icon, category.type, category.is_necessary ? 1 : 0, sortOrder]
+    )
+
+    const result = queryOne('SELECT last_insert_rowid() as id')
+    const newCategory = queryOne('SELECT * FROM categories WHERE id = ?', [result.id]) as Category
+    return { success: true, category: newCategory, message: '分类添加成功' }
+  } catch (error) {
+    return { success: false, message: '添加分类失败: ' + (error as Error).message }
+  }
+}
+
+// 修改分类（只能修改用户自定义分类，系统预置分类不可修改）
+export function updateCategory(id: number, updates: { name?: string; icon?: string; is_necessary?: boolean }): { success: boolean; category?: Category; message: string } {
+  try {
+    const category = queryOne('SELECT * FROM categories WHERE id = ?', [id]) as Category
+    if (!category) {
+      return { success: false, message: '分类不存在' }
+    }
+
+    // 系统预置分类不可修改
+    if (category.is_system) {
+      return { success: false, message: '系统预置分类不可修改' }
+    }
+
+    // 检查新名称是否与其他分类冲突
+    if (updates.name && updates.name !== category.name) {
+      const duplicate = queryOne('SELECT id FROM categories WHERE name = ? AND type = ? AND id != ?', [updates.name, category.type, id])
+      if (duplicate) {
+        return { success: false, message: '该分类名称已存在' }
+      }
+    }
+
+    const newName = updates.name || category.name
+    const newIcon = updates.icon || category.icon
+    const newIsNecessary = updates.is_necessary !== undefined ? (updates.is_necessary ? 1 : 0) : category.is_necessary
+
+    runSql(
+      `UPDATE categories SET name = ?, icon = ?, is_necessary = ? WHERE id = ?`,
+      [newName, newIcon, newIsNecessary, id]
+    )
+
+    const updated = queryOne('SELECT * FROM categories WHERE id = ?', [id]) as Category
+    return { success: true, category: updated, message: '分类修改成功' }
+  } catch (error) {
+    return { success: false, message: '修改分类失败: ' + (error as Error).message }
+  }
+}
+
+// 删除分类（只能删除用户自定义分类，系统预置分类不可删除）
+export function deleteCategory(id: number): { success: boolean; message: string } {
+  try {
+    const category = queryOne('SELECT * FROM categories WHERE id = ?', [id]) as Category
+    if (!category) {
+      return { success: false, message: '分类不存在' }
+    }
+
+    // 系统预置分类不可删除
+    if (category.is_system) {
+      return { success: false, message: '系统预置分类不可删除' }
+    }
+
+    // 检查是否有账单使用该分类
+    const usageCount = queryOne('SELECT COUNT(*) as count FROM transactions WHERE category_id = ?', [id])
+    if (usageCount && usageCount.count > 0) {
+      return { success: false, message: `该分类下有 ${usageCount.count} 条账单记录，无法删除。请先删除相关账单或将其移至其他分类` }
+    }
+
+    runSql('DELETE FROM categories WHERE id = ?', [id])
+    return { success: true, message: '分类已删除' }
+  } catch (error) {
+    return { success: false, message: '删除分类失败: ' + (error as Error).message }
+  }
 }
 
 // ==================== 预算操作 ====================

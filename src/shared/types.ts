@@ -34,6 +34,7 @@ export interface Category {
   type: TransactionType
   is_necessary: boolean
   sort_order: number
+  is_system: boolean   // 是否为系统预置分类（不可修改/删除）
 }
 
 // 预算
@@ -75,6 +76,9 @@ export interface IpcApi {
 
   // 分类相关
   getCategories: (type?: TransactionType) => Promise<Category[]>
+  addCategory: (category: Omit<Category, 'id' | 'is_system'>) => Promise<{ success: boolean; category?: Category; message: string }>
+  updateCategory: (id: number, updates: { name?: string; icon?: string; is_necessary?: boolean }) => Promise<{ success: boolean; category?: Category; message: string }>
+  deleteCategory: (id: number) => Promise<{ success: boolean; message: string }>
 
   // 预算相关
   setBudget: (budget: Omit<Budget, 'id'>) => Promise<Budget>
