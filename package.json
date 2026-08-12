@@ -1,12 +1,12 @@
 {
   "name": "heima-accounting",
   "version": "1.0.0",
-  "description": "黑马记账 - 简洁现代的 Windows 桌面记账应用",
+  "description": "记账App - 简洁现代的 Windows 桌面记账应用",
   "main": "./out/main/index.js",
   "author": "HeiMa",
   "license": "MIT",
   "scripts": {
-    "dev": "env -u ELECTRON_RUN_AS_NODE electron-vite dev",
+    "dev": "node scripts/dev.js",
     "build": "electron-vite build",
     "preview": "electron-vite preview",
     "package": "electron-builder build --win",
@@ -58,7 +58,7 @@
   },
   "build": {
     "appId": "com.heima.accounting",
-    "productName": "黑马记账",
+    "productName": "记账App",
     "directories": {
       "output": "release"
     },

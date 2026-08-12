@@ -40,7 +40,7 @@ export default function Login() {
         <div className="bg-card rounded-2xl shadow-card p-8">
           {/* Logo */}
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-semibold text-text-primary">黑马记账</h1>
+            <h1 className="text-2xl font-semibold text-text-primary">记账App</h1>
             <p className="text-text-secondary text-sm mt-2">登录您的账户</p>
           </div>
 

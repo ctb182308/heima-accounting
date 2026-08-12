@@ -48,7 +48,7 @@ export default function Register() {
       <div className="w-full max-w-md">
         <div className="bg-card rounded-2xl shadow-card p-8">
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-semibold text-text-primary">黑马记账</h1>
+            <h1 className="text-2xl font-semibold text-text-primary">记账App</h1>
             <p className="text-text-secondary text-sm mt-2">创建新账户</p>
           </div>
 

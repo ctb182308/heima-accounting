@@ -1,10 +1,10 @@
-# 黑马记账 App
+# 记账 App
 
 > 一个简洁现代的 Windows 桌面记账应用，帮助你轻松管理日常收支。
 
 ## 项目概述
 
-**黑马记账** 是一款面向个人和家庭的 Windows 桌面记账应用，采用 Electron + React + TypeScript 技术栈开发，具有简洁现代的苹果风格 UI 设计。
+**记账App** 是一款面向个人和家庭的 Windows 桌面记账应用，采用 Electron + React + TypeScript 技术栈开发，具有简洁现代的苹果风格 UI 设计。
 
 ### 核心特性
 - 📝 快速记账：支持收入和支出记录
@@ -35,7 +35,7 @@
 ## 项目结构
 
 ```
-黑马记账App/
+记账App/
 ├── src/                    # 源代码
 │   ├── main/              # Electron 主进程
 │   │   ├── index.ts       # 主进程入口

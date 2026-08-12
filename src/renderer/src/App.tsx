@@ -9,6 +9,7 @@ import TransactionList from './pages/TransactionList'
 import Statistics from './pages/Statistics'
 import Budget from './pages/Budget'
 import Settings from './pages/Settings'
+import Categories from './pages/Categories'
 
 function App() {
   const { currentUser } = useUserStore()
@@ -27,6 +28,7 @@ function App() {
           <Route path="transactions" element={<TransactionList />} />
           <Route path="statistics" element={<Statistics />} />
           <Route path="budget" element={<Budget />} />
+          <Route path="categories" element={<Categories />} />
           <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>

@@ -8,7 +8,8 @@ import {
   Wallet,
   Settings,
   LogOut,
-  User
+  User,
+  Tag
 } from 'lucide-react'
 
 // 侧边栏菜单项
@@ -18,6 +19,7 @@ const menuItems = [
   { path: '/transactions', icon: List, label: '账单' },
   { path: '/statistics', icon: BarChart3, label: '统计' },
   { path: '/budget', icon: Wallet, label: '预算' },
+  { path: '/categories', icon: Tag, label: '分类' },
   { path: '/settings', icon: Settings, label: '设置' }
 ]
 
@@ -37,7 +39,7 @@ export default function Layout() {
       <aside className="w-56 bg-card border-r border-border flex flex-col">
         {/* Logo 区域 */}
         <div className="h-14 flex items-center px-5 border-b border-border drag-region">
-          <h1 className="text-lg font-semibold text-primary no-drag">黑马记账</h1>
+          <h1 className="text-lg font-semibold text-primary no-drag">记账App</h1>
         </div>
 
         {/* 用户信息 */}
@@ -87,11 +89,11 @@ export default function Layout() {
       </aside>
 
       {/* 主内容区 */}
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 overflow-auto bg-gradient-to-br from-blue-50/40 via-white to-purple-50/40">
         {/* 顶部栏（用于窗口拖动） */}
-        <div className="h-14 drag-region" />
+        <div className="h-7 drag-region" />
         {/* 页面内容 */}
-        <div className="px-8 pb-8 -mt-14">
+        <div className="px-8 pb-8">
           <Outlet />
         </div>
       </main>
