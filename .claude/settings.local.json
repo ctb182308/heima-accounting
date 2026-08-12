@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npx approve-scripts *)",
+      "Bash(node node_modules/electron/install.js)",
+      "Bash(node node_modules/esbuild/install.js)",
+      "Bash(npm run *)",
+      "Bash(d25cc947)",
+      "Bash(echo \"const electron = require\\('electron'\\); console.log\\(Object.keys\\(electron\\)\\);\")",
+      "Bash(npx electron *)",
+      "Bash(echo 'const electron = require\\(\"electron\"\\); console.log\\(\"app:\", typeof electron.app\\);')",
+      "Bash(./node_modules/.bin/electron /tmp/test-e.js)",
+      "Bash(node -e \"const p = require\\('electron/package.json'\\); console.log\\(p.version\\)\")",
+      "Bash(node -e \"const e = require\\('electron'\\); console.log\\(typeof e, typeof e.app\\)\")",
+      "Bash(./node_modules/electron/dist/electron.exe ./test.js)",
+      "Bash(./node_modules/electron/dist/electron.exe ./out/main/index.js)",
+      "Bash(cd /tmp)",
+      "Bash(echo \"const electron = require\\('electron'\\); console.log\\(typeof electron, Object.keys\\(electron\\).slice\\(0,20\\)\\); electron.app.whenReady\\(\\).then\\(\\(\\) => { console.log\\('READY!'\\); electron.app.quit\\(\\); }\\);\")",
+      "Bash(/d/dev/code/BlackHorseAccountingApp/node_modules/electron/dist/electron.exe /tmp/test-e.js)",
+      "Bash(echo 'const e = require\\(\"electron\"\\); console.log\\(typeof e, Array.isArray\\(e\\) ? \"array\" : Object.keys\\(e\\).slice\\(0,20\\)\\); process.exit\\(0\\);')",
+      "Bash(\"/d/dev/code/黑马记账App/node_modules/electron/dist/electron.exe\" e-test.js)",
+      "Bash(\"/d/dev/code/黑马记账App/node_modules/electron/dist/electron.exe\" --version)",
+      "Bash(\"/d/dev/code/黑马记账App/node_modules/electron/dist/electron.exe\" -i)",
+      "Bash(cp -r /d/dev/code/黑马记账App/node_modules/electron /tmp/electron-test/node_modules/)",
+      "Read(//tmp/**)",
+      "Bash(\"/d/dev/code/黑马记账App/node_modules/electron/dist/electron.exe\" .)",
+      "Bash(echo 'const e = require\\(\"electron\"\\); console.log\\(\"type:\", typeof e, \"| keys:\", Object.keys\\(e\\).slice\\(0,5\\)\\); if \\(typeof e === \"object\"\\) e.app.whenReady\\(\\).then\\(\\(\\) => e.app.quit\\(\\)\\); else process.exit\\(0\\);')",
+      "Bash(node -e \"const p = require\\('./package.json'\\); p.main = 'main.js'; require\\('fs'\\).writeFileSync\\('package.json', JSON.stringify\\(p, null, 2\\)\\);\")",
+      "Bash(node -)",
+      "Bash(npx --yes @quick-start/electron@latest --directory /tmp/electron-test-app)",
+      "Bash(npm create *)",
+      "Bash(./node_modules/electron/dist/electron.exe ./_p.js)",
+      "Bash(env)",
+      "Bash(ELECTRON_RUN_AS_NODE= ./node_modules/electron/dist/electron.exe -e \"console.log\\('process.type:', process.type\\); console.log\\('electron app:', typeof require\\('electron'\\).app\\); process.exit\\(0\\);\")",
+      "Bash(unset ELECTRON_RUN_AS_NODE)",
+      "Bash(./node_modules/electron/dist/electron.exe ./_p2.js)",
+      "Bash(env -u ELECTRON_RUN_AS_NODE ./node_modules/electron/dist/electron.exe ./_t.js)",
+      "Bash(npx electron-builder *)"
+    ]
+  }
+}
