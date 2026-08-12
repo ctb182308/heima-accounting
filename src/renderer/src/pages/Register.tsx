@@ -44,7 +44,7 @@ export default function Register() {
   }
 
   return (
-    <div className="h-screen flex items-center justify-center bg-background">
+    <div className="h-screen flex items-center justify-center">
       <div className="w-full max-w-md">
         <div className="bg-card rounded-2xl shadow-card p-8">
           <div className="text-center mb-8">

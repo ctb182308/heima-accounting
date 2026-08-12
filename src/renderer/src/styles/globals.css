@@ -13,12 +13,16 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
     'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial,
     sans-serif;
-  background-color: #F5F5F7;
   color: #1D1D1F;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
   user-select: none;
+}
+
+/* 全局渐变背景 */
+html, body, #root {
+  background: linear-gradient(135deg, #dbeafe 0%, #e9d5ff 40%, #fce7f3 70%, #dbeafe 100%) !important;
 }
 
 #root {

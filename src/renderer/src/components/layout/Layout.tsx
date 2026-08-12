@@ -34,7 +34,7 @@ export default function Layout() {
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen">
       {/* 侧边栏 */}
       <aside className="w-56 bg-card border-r border-border flex flex-col">
         {/* Logo 区域 */}
@@ -89,7 +89,7 @@ export default function Layout() {
       </aside>
 
       {/* 主内容区 */}
-      <main className="flex-1 overflow-auto bg-gradient-to-br from-blue-50/40 via-white to-purple-50/40">
+      <main className="flex-1 overflow-auto">
         {/* 顶部栏（用于窗口拖动） */}
         <div className="h-7 drag-region" />
         {/* 页面内容 */}

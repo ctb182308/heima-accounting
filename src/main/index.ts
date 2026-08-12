@@ -12,6 +12,7 @@ function createWindow(): void {
     show: false,
     autoHideMenuBar: true,
     titleBarStyle: 'hidden',
+    backgroundColor: '#dbeafe',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
